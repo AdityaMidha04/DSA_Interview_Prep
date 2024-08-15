@@ -1,0 +1,73 @@
+/* First Approach : Using DFS and freq vector */
+/* TC : O(n)  ||  SC : O(n)
+
+class Solution {
+public:
+    void DFS(TreeNode* root, int &res, vector<int> &freq) {
+        if(!root) return;
+
+        freq[root->val]++;
+
+        if (!root->left && !root->right) {
+            int oddCount = 0;
+            for(int num : freq) {
+                if (num % 2 == 1 && num > 0) oddCount++;
+            }
+            if (oddCount <= 1) res++;
+        }
+        
+        DFS(root->left,res,freq);
+        DFS(root->right,res,freq);
+
+        freq[root->val]--;
+    }
+
+    int pseudoPalindromicPaths (TreeNode* root) {
+        int res = 0;
+        vector<int> freq(10,0);
+        DFS(root,res,freq);
+        return res;
+    }
+};
+
+********************************************************************************************************************************************
+
+/* Second Approach : Using DFS and const space */
+/* TC : O(n)  ||  SC : O(1)
+
+class Solution {
+public:
+
+    void DFS(TreeNode* &root, int &res, int cnt) {
+        if(!root) return;
+
+        cnt = cnt ^ (1<<root->val);
+
+        if (!root->left && !root->right) {
+            if ((cnt & (cnt-1)) == 0) res++;
+        }
+
+        DFS(root->left,res,cnt);
+        DFS(root->right,res,cnt);
+    }
+
+    int pseudoPalindromicPaths (TreeNode* root) {
+        cin.tie(0);
+        cout.tie(0);
+        ios_base::sync_with_stdio(0);
+        int res = 0;
+        DFS(root,res,0);
+        return res;
+    }
+};
+
+
+
+
+
+
+
+
+
+
+
