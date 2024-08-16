@@ -1,0 +1,97 @@
+/* First Approach : Using extra vector for each level */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    bool isEvenOddTree(TreeNode* root) {
+        queue<TreeNode*> que;
+        que.push(root);
+        int lvl = 1;
+
+        while(!que.empty()) {
+            int n = que.size();
+            vector<int> v;
+            while(n--) {
+                auto node = que.front();
+                que.pop();
+
+                if(node->left) {
+                    que.push(node->left);
+                    v.push_back(node->left->val);
+                }
+
+                if(node->right) {
+                    que.push(node->right);
+                    v.push_back(node->right->val);
+                }
+
+            }
+            if(lvl % 2 == 1) {
+                int n = v.size(), cnt = 0;
+                for(int i=0; i<n; i++) {
+                    if (i > 0 && v[i] >= v[i-1]) break;
+                    if(v[i]%2==0) cnt++;
+                }
+                if (cnt != n) return false;
+            } else {
+                int n = v.size(), cnt = 0;
+                for(int i=0; i<n; i++) {
+                    if (i > 0 && v[i] <= v[i-1]) break;
+                    if(v[i]%2==1) cnt++;
+                }
+                if (cnt != n) return false;
+            }
+            lvl++;
+        }
+        if(root->val%2==0) return false;
+        return true;
+    }
+};
+
+***************************************************************************************************************************
+/* Second Approach : without using vector */
+class Solution {
+public:
+    bool isEvenOddTree(TreeNode* root) {
+        cin.tie(0);
+        cout.tie(0);
+        ios_base::sync_with_stdio(0);
+        queue<TreeNode*> que;
+        que.push(root);
+        int lvl = 0;
+        while(!que.empty()) {
+            int n = que.size();
+            int maxi = INT_MAX, mini = INT_MIN;
+            while(n--) {
+                auto node = que.front();
+                que.pop();
+
+                if(lvl%2==1) {
+                    // odd level
+                    if (node->val%2 == 1) return false;
+                    if (node->val >= maxi) return false;
+                    maxi = node->val;
+                }else {
+                    if (node->val%2 == 0) return false;
+                    if (node->val <= mini) return false;
+                    mini = node->val;
+                }
+
+                if(node->left) que.push(node->left);
+                if(node->right) que.push(node->right);
+            } 
+            lvl++;
+        }
+        if(root->val%2==0) return false;
+        return true;
+    }
+};
