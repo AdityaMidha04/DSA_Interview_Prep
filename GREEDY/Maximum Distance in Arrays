@@ -1,0 +1,21 @@
+/* Greedy Solution
+   TC : O(n) || SC : O(1)
+*/
+
+class Solution {
+public:
+    int maxDistance(vector<vector<int>>& arrays) {
+        int cur_max = arrays[0][arrays[0].size()-1];
+        int cur_min = arrays[0][0];
+        int res = INT_MIN;
+
+        for (int i = 1; i < arrays.size(); i++) {
+            int mini = arrays[i][0];
+            int maxi = arrays[i][arrays[i].size()-1];
+            res = max({res, abs(cur_max-mini), abs(maxi - cur_min)});
+            cur_max = max(cur_max,maxi);
+            cur_min = min(cur_min,mini);
+        }
+        return res;      
+    }
+};
