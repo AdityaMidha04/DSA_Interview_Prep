@@ -1,0 +1,39 @@
+/* TC : O(n)  ||  SC : O(n)  */
+
+class Solution {
+public:
+    TreeNode* createBinaryTree(vector<vector<int>>& descriptions) {
+        cin.tie(0);
+        cout.tie(0);
+        ios_base::sync_with_stdio(0);
+        unordered_map<int, TreeNode*> mp;
+        unordered_set<int> st;
+
+        for(vector<int> &v : descriptions) {
+            int node = v[0];
+            int child = v[1];
+            int dir = v[2];
+
+            if(mp.find(node)==mp.end()) {
+                mp[node] = new TreeNode(node);
+            }
+            if(mp.find(child)==mp.end()) {
+                mp[child] = new TreeNode(child);
+            }
+
+            if(dir==1) {
+                mp[node]->left = mp[child];
+            }else {
+                mp[node]->right = mp[child];
+            }
+            st.insert(child);
+        }
+
+        for(auto v : descriptions) {
+            if(st.find(v[0])==st.end()) {
+                return mp[v[0]];
+            }
+        }
+        return NULL;
+    }
+};
