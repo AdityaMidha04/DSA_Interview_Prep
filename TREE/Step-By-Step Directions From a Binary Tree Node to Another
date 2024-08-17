@@ -1,0 +1,51 @@
+/* Using Lca concept */
+
+class Solution {
+public:
+    string getDirections(TreeNode* root, int startValue, int destValue) {
+        root = lca(root,startValue,destValue);
+        string one = "";
+        string two = "";
+        
+        getPath(root, startValue, one);
+        getPath(root, destValue, two);
+
+        for (int i = 0; i < one.size(); i++) {
+            one[i] = 'U';
+        }
+
+        return one + two;
+    }
+
+    bool getPath(TreeNode* root, int value, string &path) {
+        if (root == NULL) return false;
+
+        if (root->val == value) return true;
+        
+        bool findLeft = getPath(root->left, value, path += 'L');
+        if (findLeft) return true;
+
+        path.pop_back();
+
+        bool findRight = getPath(root->right, value, path += 'R');
+        if (findRight) return true;
+
+        path.pop_back();
+
+        return false;
+    }
+
+    TreeNode* lca(TreeNode* root, int st, int dv) {
+        if (!root) return NULL;
+        if (root->val == st || root->val == dv) {
+            return root;
+        }
+
+        auto left = lca(root->left,st,dv);
+        auto right = lca(root->right,st,dv);
+
+        if (left && right) return root;
+
+        return (!left) ? right : left;
+    }
+};
