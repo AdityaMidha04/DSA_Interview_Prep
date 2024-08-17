@@ -1,5 +1,5 @@
 /* If you know what info. needed to be passed to the parent node then you can solve many tree questions easily */
-/* TC : O(N) || SC : O(N) */
+/* TC : O(N * M^2) || SC : O(N * M) */
 
 /**
  * Definition for a binary tree node.
