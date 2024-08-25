@@ -1,0 +1,33 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+
+
+void solve() {
+    int t; cin>>t;
+    while(t--) {
+        unordered_map<int,int> mp;
+        int n, m; cin>>n; cin>>m;
+        string x, s; cin>>x; cin>>s;
+        int cnt = 0;
+        bool f = 1;
+        string a = x;
+        while(n <= 625) {
+            if(a.find(s) != -1) {
+                cout << cnt << "\n";
+                f = 0;
+                break;
+            }else{
+                a += a;
+                n = a.size();
+            }
+            cnt++;
+        }
+        if(f) cout << -1 << "\n";
+    }
+}
+
+int main() {
+    solve();
+    return 0;
+}
