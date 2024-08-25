@@ -1,0 +1,43 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+void solve() {
+    int t; cin>>t;
+    while(t--) {
+        unordered_map<int,int> mp;
+        int n; cin>>n;
+        int a[n];
+        for(int i = 0; i < n; i++) {
+            cin >> a[i];
+            mp[a[i]]++;
+        }
+        
+        int m = mp.size();
+        if(m==1) {
+            cout << "Yes\n";
+            continue;
+        }
+        if (m > 2){
+            cout << "No\n";
+            continue;
+        }
+        
+        if(m == 2) {
+            auto it = mp.begin();
+            int f = it->second;
+            it++;
+            int s = it->second;
+            
+            if(abs(f-s) == 1 || abs(f-s) == 0) {
+                cout << "Yes\n";
+            }else {
+                cout << "No\n";
+            }
+        }
+    }
+}
+
+int main() {
+    solve();
+    return 0;
+}
