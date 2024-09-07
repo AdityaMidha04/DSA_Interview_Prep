@@ -1,0 +1,58 @@
+class Solution {
+public:
+    int mod = 1e9+7;
+
+    long long expMod(long long N, long long X) {
+        long long res = 1;
+        while(X > 0) {
+            if(X % 2 == 1) {
+                res = ((res % mod) * (N % mod)) % mod;
+            }
+            N = ((N%mod) * (N%mod)) % mod;
+            X /= 2;
+        }
+        return res;
+    }
+
+    vector<int> getFinalState(vector<int>& nums, int k, int multiplier) {
+        if(multiplier==1) return nums;
+        int n = nums.size();
+        int maxEle = *max_element(nums.begin(),nums.end());
+        // int minEle = *min_element(nums.begin(),nums.end());
+        priority_queue<pair<int,int>, vector<pair<int,int>>, greater<> >minHeap;
+        
+        
+            for(int i = 0; i < n; ++i) {
+                minHeap.push({nums[i], i});
+            }
+            while(minHeap.top().first * 1ll * multiplier <= maxEle && k > 0) {
+                int num = minHeap.top().first;
+                int idx = minHeap.top().second;
+                minHeap.pop();
+                num = ((num % mod) *(multiplier % mod)) % mod;
+                nums[idx] = num;
+                minHeap.push({num,idx});
+                k--;
+            }
+        
+
+        long long mul = expMod(multiplier,k / n);
+
+        while(!minHeap.empty()) {
+
+                int num = minHeap.top().first;
+                int idx = minHeap.top().second;
+                minHeap.pop();
+
+                if(k % n) {
+                    k--;
+                    nums[idx] = (((multiplier  * 1LL * mul) % mod) * num) % mod;
+                }else {
+                    nums[idx] = ((num % mod) * (mul % mod)) % mod;
+                }
+        }
+
+
+        return nums;
+    }
+};
